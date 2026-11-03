@@ -1,0 +1,280 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "How TapScreen turns a tap into a click",
+    "output": "docs/architecture.html",
+    "viewBox": [
+      1068,
+      720
+    ],
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "tap-path",
+        "label": "One tap, end to end",
+        "focus": [
+          "imu",
+          "detector",
+          "gate",
+          "features",
+          "model",
+          "decision",
+          "smart"
+        ],
+        "note": "About 140 ms from the finger touching the glass to the button being pressed."
+      },
+      {
+        "id": "filtering",
+        "label": "What is not a tap",
+        "focus": [
+          "detector",
+          "inputs",
+          "gate"
+        ],
+        "note": "Typing, trackpad use, app switching and lid moves are thrown away before the model sees them."
+      },
+      {
+        "id": "learning",
+        "label": "Learning your taps",
+        "focus": [
+          "dataset",
+          "model",
+          "decision"
+        ],
+        "note": "Calibration taps train five models on this Mac; the best cross-validated one is kept."
+      }
+    ]
+  },
+  "stages": [
+    {
+      "label": "Sensors"
+    },
+    {
+      "label": "Detection"
+    },
+    {
+      "label": "Learning"
+    },
+    {
+      "label": "Decision"
+    },
+    {
+      "label": "Action"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "imu",
+      "type": "external",
+      "label": "Motion sensor",
+      "sublabel": "gyro + accel, 800 Hz",
+      "stage": 0,
+      "row": 0,
+      "tag": "AppleSPUHIDDevice"
+    },
+    {
+      "id": "inputs",
+      "type": "external",
+      "label": "Keyboard + trackpad",
+      "sublabel": "event times",
+      "stage": 0,
+      "row": 2,
+      "tag": "no permission"
+    },
+    {
+      "id": "detector",
+      "type": "backend",
+      "label": "Tap detector",
+      "sublabel": "adaptive trigger",
+      "stage": 1,
+      "row": 0,
+      "tag": "160 ms window"
+    },
+    {
+      "id": "gate",
+      "type": "security",
+      "label": "Gates",
+      "sublabel": "typing, trackpad, apps",
+      "stage": 1,
+      "row": 2,
+      "tag": "drop non-taps"
+    },
+    {
+      "id": "features",
+      "type": "backend",
+      "label": "Features",
+      "sublabel": "296 per tap",
+      "stage": 2,
+      "row": 0,
+      "tag": "strength-normalised"
+    },
+    {
+      "id": "model",
+      "type": "backend",
+      "label": "Classifier",
+      "sublabel": "kNN, LDA, LR, MLP",
+      "stage": 2,
+      "row": 2,
+      "tag": "best by 5-fold CV"
+    },
+    {
+      "id": "dataset",
+      "type": "database",
+      "label": "Your taps",
+      "sublabel": "calibration taps",
+      "stage": 2,
+      "row": 4,
+      "tag": "dataset.json"
+    },
+    {
+      "id": "decision",
+      "type": "backend",
+      "label": "Where you tapped",
+      "sublabel": "odds per zone",
+      "stage": 3,
+      "row": 2,
+      "tag": "rejects unfamiliar"
+    },
+    {
+      "id": "ax",
+      "type": "external",
+      "label": "Accessibility",
+      "sublabel": "buttons, links",
+      "stage": 3,
+      "row": 0,
+      "tag": "frontmost app"
+    },
+    {
+      "id": "smart",
+      "type": "frontend",
+      "label": "Smart Touch",
+      "sublabel": "press best target",
+      "stage": 4,
+      "row": 0,
+      "tag": "default"
+    },
+    {
+      "id": "tapmap",
+      "type": "frontend",
+      "label": "Tap Map",
+      "sublabel": "action per zone",
+      "stage": 4,
+      "row": 2,
+      "tag": "apps, sites, media"
+    },
+    {
+      "id": "zoom",
+      "type": "frontend",
+      "label": "Zoom & Tap",
+      "sublabel": "refine in 2-3 taps",
+      "stage": 4,
+      "row": 4,
+      "tag": "any point"
+    }
+  ],
+  "flows": [
+    {
+      "from": "imu",
+      "to": "detector",
+      "label": "raw reports",
+      "classification": "Q16.16 x/y/z",
+      "variant": "emphasis"
+    },
+    {
+      "from": "detector",
+      "to": "gate",
+      "label": "tap window",
+      "classification": "gyro + accel",
+      "variant": "emphasis",
+      "labelDy": 24
+    },
+    {
+      "from": "inputs",
+      "to": "gate",
+      "label": "last input times",
+      "variant": "dashed"
+    },
+    {
+      "from": "gate",
+      "to": "features",
+      "label": "accepted tap",
+      "variant": "emphasis"
+    },
+    {
+      "from": "features",
+      "to": "model",
+      "label": "feature vector",
+      "variant": "emphasis",
+      "labelDy": 24
+    },
+    {
+      "from": "dataset",
+      "to": "model",
+      "label": "train",
+      "classification": "on this Mac",
+      "variant": "dashed",
+      "labelDx": 58,
+      "labelDy": -40
+    },
+    {
+      "from": "model",
+      "to": "decision",
+      "label": "probabilities",
+      "variant": "emphasis"
+    },
+    {
+      "from": "decision",
+      "to": "smart",
+      "label": "tap position",
+      "variant": "emphasis"
+    },
+    {
+      "from": "ax",
+      "to": "smart",
+      "label": "visible targets",
+      "variant": "default",
+      "route": "straight"
+    },
+    {
+      "from": "decision",
+      "to": "tapmap",
+      "label": "zone",
+      "labelDx": 30
+    },
+    {
+      "from": "decision",
+      "to": "zoom",
+      "label": "zone"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Signal",
+      "items": [
+        "A tap twists the laptop about its hinge",
+        "The gyroscope feels where it landed",
+        "Desk knocks shake it sideways instead"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Learning",
+      "items": [
+        "You calibrate once, about 3 minutes",
+        "Five models compete; the best one is kept",
+        "Every pick you make adds a training tap"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Privacy",
+      "items": [
+        "Everything runs on your Mac",
+        "No camera, no network, no account",
+        "Mic is off unless you turn it on"
+      ]
+    }
+  ]
+}
