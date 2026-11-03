@@ -76,7 +76,7 @@ struct HomeTab: View {
     @ViewBuilder private var setup: some View {
         if !engine.inputMonitoringOK || engine.sensorProblem != nil {
             Banner(symbol: "exclamationmark.triangle.fill", text: "TapScreen can't read the motion sensor. Allow Input Monitoring, then reopen TapScreen.",
-                   color: .orange, button: "Open Settings") { engine.requestInputMonitoringIfNeeded(); engine.openPrivacy("Privacy_ListenEvent") }
+                   color: .orange, button: "Open Settings") { engine.requestInputMonitoringIfNeeded(force: true); engine.openPrivacy("Privacy_ListenEvent") }
         }
         if !engine.accessibilityOK {
             Banner(symbol: "hand.raised.fill", text: "Allow Accessibility so taps can press buttons, open apps and run shortcuts.",

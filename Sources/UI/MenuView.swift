@@ -39,7 +39,7 @@ struct MenuView: View {
     @ViewBuilder private var banners: some View {
         if let problem = engine.sensorProblem {
             Banner(symbol: "exclamationmark.triangle.fill", text: problem, color: .orange,
-                   button: "Allow") { engine.requestInputMonitoringIfNeeded(); engine.openPrivacy("Privacy_ListenEvent") }
+                   button: "Allow") { engine.requestInputMonitoringIfNeeded(force: true); engine.openPrivacy("Privacy_ListenEvent") }
         }
         if !engine.accessibilityOK && engine.settings.enabled {
             Banner(symbol: "hand.raised.fill", text: "Clicking and shortcuts need Accessibility permission.", color: .orange,

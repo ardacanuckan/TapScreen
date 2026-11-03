@@ -200,6 +200,9 @@ enum SelfTest {
     /// `TapScreen --ax-test`: lists what Smart Touch can find in the frontmost app right now.
     @MainActor
     static func accessibility() -> Never {
+        // The first answer in a fresh process can arrive late; give macOS a moment.
+        _ = AXIsProcessTrusted()
+        RunLoop.current.run(until: Date().addingTimeInterval(1))
         print("accessibility trusted:", AXIsProcessTrusted())
         print("frontmost:", NSWorkspace.shared.frontmostApplication?.localizedName ?? "?")
         for budget in [0.15, 0.5] {

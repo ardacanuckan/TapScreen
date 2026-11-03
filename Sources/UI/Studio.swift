@@ -387,7 +387,7 @@ struct SettingsTab: View {
         }
         Card(title: "Permissions") {
             permission("Input Monitoring", "To read the motion sensor", engine.inputMonitoringOK) {
-                engine.requestInputMonitoringIfNeeded(); engine.openPrivacy("Privacy_ListenEvent")
+                engine.requestInputMonitoringIfNeeded(force: true); engine.openPrivacy("Privacy_ListenEvent")
             }
             permission("Accessibility", "To click, find buttons and run shortcuts", engine.accessibilityOK) {
                 engine.requestAccessibility(); engine.openPrivacy("Privacy_Accessibility")

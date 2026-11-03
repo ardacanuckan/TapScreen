@@ -97,15 +97,15 @@ right.
 |---|---|
 | Home says the sensor is off or "waiting for sensor" | Allow Input Monitoring (step 4) and reopen TapScreen. If it still shows no data, the Mac may have no motion sensor (step 1). |
 | Taps are detected but nothing gets pressed | Allow Accessibility (step 4), then quit and reopen. |
-| Permissions stopped working after an update | macOS treats a new version as a new app. In Privacy & Security → Accessibility and Input Monitoring, remove TapScreen with **–**, add it again with **+**, and reopen it. |
+| Permissions stopped working after an update | Only happens when coming from 1.0.0. In Privacy & Security → Accessibility and Input Monitoring, remove TapScreen with **–**, add it again with **+**, and reopen it. Later updates keep them. |
 | Taps go to the wrong place | Add more calibration taps where you use the laptop, or use a coarser grid. Check the Model tab for weak zones. |
 | It reacts when I didn't tap | Run **Calibration → Record noise only** while doing whatever triggered it. |
 | No hand icon in the menu bar | A full menu bar hides icons behind the camera notch. Use the Dock icon or ⌃⌥T instead. |
 
 ## Update
 
-Download the new zip, quit TapScreen, and replace the old app with the new one. Your calibration and settings are
-kept. Then redo the two permission switches (see Troubleshooting).
+Download the new zip, quit TapScreen, and replace the old app with the new one. Your calibration, settings and
+permissions are kept. (Coming from 1.0.0, switch the two permissions on once more; see Troubleshooting.)
 
 ## Uninstall
 

@@ -127,6 +127,7 @@ final class Engine: ObservableObject {
     private var learnedSinceTraining = 0
     private var noRateSince: Date?
     private var lastAppSwitch = 0.0
+    private var askedInputMonitoring = false
 
     var lastEvent: TapEvent? { recent.first }
 
@@ -214,7 +215,8 @@ final class Engine: ObservableObject {
         if abs(rate - sensorRate) > 25 || (rate == 0) != (sensorRate == 0) { sensorRate = rate }
         set(\.lidAngle, imu.lidAngle)
         set(\.accessibilityOK, AXIsProcessTrusted())
-        set(\.inputMonitoringOK, IOHIDCheckAccess(kIOHIDRequestTypeListenEvent) == kIOHIDAccessTypeGranted)
+        // A streaming sensor proves access even when macOS reports the status as unknown.
+        set(\.inputMonitoringOK, IOHIDCheckAccess(kIOHIDRequestTypeListenEvent) == kIOHIDAccessTypeGranted || c.gyro > 0)
         if imu.isRunning, c.gyro == 0 {
             if let since = noRateSince, Date().timeIntervalSince(since) > 3 {
                 set(\.sensorProblem, imu.error == "permission" || !inputMonitoringOK
@@ -228,7 +230,11 @@ final class Engine: ObservableObject {
         expireInteraction()
     }
 
-    func requestInputMonitoringIfNeeded() {
+    /// Shows the system prompt only when access isn't granted, and on its own at most once per launch.
+    /// Buttons the user clicks pass `force` to ask again.
+    func requestInputMonitoringIfNeeded(force: Bool = false) {
+        guard force || !askedInputMonitoring else { return }
+        askedInputMonitoring = true
         if IOHIDCheckAccess(kIOHIDRequestTypeListenEvent) != kIOHIDAccessTypeGranted {
             IOHIDRequestAccess(kIOHIDRequestTypeListenEvent)
         }
@@ -399,10 +405,8 @@ final class Engine: ObservableObject {
     /// One clear winner → press it. Several close candidates → ask with up to four big corner tiles. Nothing near
     /// the tap → do nothing rather than guess.
     private func smartTap(_ p: Prediction, sample: TapSample) -> String {
-        guard accessibilityOK else {
-            requestAccessibility()
-            return "Accessibility permission needed"
-        }
+        // No prompt here: a tap shouldn't pop up System Settings. The Home banner asks instead.
+        guard accessibilityOK else { return "Accessibility permission needed" }
         guard let model else { return "" }
         let ranked = SmartTouch.visible(SmartTouch.rank(SmartTouch.collect(), posterior: p.posterior, centroids: model.centroids,
                                                         grid: settings.grid))
