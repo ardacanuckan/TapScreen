@@ -399,6 +399,7 @@ struct SettingsTab: View {
         Card(title: "About") {
             Text("TapScreen feels taps on your display through the MacBook's built-in motion sensor (and optionally the microphone), and a small model trained on your own taps works out where you tapped. No extra hardware, no network: everything stays on this Mac.")
                 .font(.system(size: 12)).fixedSize(horizontal: false, vertical: true)
+            Text("Made by Ardacan Uckan · github.com/ardacanuckan/TapScreen").font(.system(size: 12, weight: .medium))
             Text("Sensor access and the idea: LidTap (Yemcube), yamete, apple-silicon-accelerometer. Data: ~/Library/Application Support/TapScreen")
                 .font(.system(size: 11)).foregroundStyle(.secondary)
         }

@@ -106,6 +106,12 @@ rebuild needs the permissions again. To avoid that, create a code signing certif
 Your data lives in `~/Library/Application Support/TapScreen`. `dataset.json` keeps every raw tap, so a better
 model or a different grid can reuse old calibration.
 
+## License
+
+TapScreen is made by Ardacan Uckan. You can use, change and share it, including commercially, as long as you give
+visible credit, for example "Based on TapScreen by Ardacan Uckan" with a link to this repository. See
+[LICENSE](LICENSE) for the exact terms.
+
 ## Credits
 
 The motion sensor access and the idea come from [LidTap](https://github.com/harsha20599/lidtap) by Yemcube

@@ -1,0 +1,32 @@
+TapScreen Attribution License
+
+Copyright (c) 2026 Ardacan Uckan
+
+Permission is granted, free of charge, to any person obtaining a copy of this software and its documentation (the
+"Software") to use, copy, modify, merge, publish, distribute, sublicense and sell copies of the Software, and to
+permit others to do so, subject to these conditions:
+
+1. Credit. Anything that uses, includes or is based on the Software, in whole or in part (an app, a library, a
+   fork, a product, a service, an article, a video or a post), must give clear, visible credit to the author, for
+   example:
+
+       Based on TapScreen by Ardacan Uckan (https://github.com/ardacanuckan/TapScreen)
+
+   In software, the credit must be shown where its users can see it, such as an About window, a credits screen,
+   its README or its store listing. Keeping it only inside source files is not enough.
+
+2. Notice. This copyright notice and this license must be included in all copies or substantial portions of the
+   Software.
+
+3. No misrepresentation. You may not present the Software, or work based on it, as entirely your own, and you may
+   not imply that the author endorses your work.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHOR BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Third-party credit: the way TapScreen reads the MacBook motion sensor was learned from LidTap by Yemcube
+(https://github.com/harsha20599/lidtap), yamete (https://github.com/chipcolate/yamete) and
+apple-silicon-accelerometer (https://github.com/olvvier/apple-silicon-accelerometer). LidTap's own license asks for
+credit and for approval before commercial use of work built on it; check it if your project builds on LidTap.

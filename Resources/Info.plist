@@ -15,6 +15,6 @@
     <key>LSApplicationCategoryType</key><string>public.app-category.utilities</string>
     <key>NSHighResolutionCapable</key><true/>
     <key>NSMicrophoneUsageDescription</key><string>With mic fusion on, TapScreen also listens to the sound of each tap on the display to tell better where it landed. Audio never leaves your Mac.</string>
-    <key>NSHumanReadableCopyright</key><string>Use your MacBook display like a touchscreen. No extra hardware.</string>
+    <key>NSHumanReadableCopyright</key><string>© 2026 Ardacan Uckan. Use your MacBook display like a touchscreen.</string>
 </dict>
 </plist>
